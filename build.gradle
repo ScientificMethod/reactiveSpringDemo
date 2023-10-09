@@ -25,11 +25,21 @@ repositories {
 }
 
 dependencies {
+	implementation platform("software.amazon.awssdk:bom:2.17.22")
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	implementation "software.amazon.awssdk:sdk-core"
+	implementation "software.amazon.awssdk:dynamodb-enhanced"
+	implementation "software.amazon.awssdk:sqs"
+	implementation "software.amazon.awssdk:netty-nio-client"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'io.projectreactor:reactor-test'
+
+	// Containers used to setup local mocks of AWS environment
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:localstack'
 }
 
 
