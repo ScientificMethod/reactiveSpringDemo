@@ -1,0 +1,29 @@
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    integration {
+        java.srcDir "$projectDir/src/integration/java"
+        resources.srcDir "$projectDir/src/integration/resources"
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+configurations {
+    integrationImplementation.extendsFrom testImplementation
+    integrationRuntime.extendsFrom testRuntime
+    integrationCompile.extendsFrom testCompile
+}
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+    outputs.upToDateWhen {false}
+
+    useJUnitPlatform()
+}
+
+processIntegrationResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}

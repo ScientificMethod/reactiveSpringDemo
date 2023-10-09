@@ -1,0 +1,16 @@
+apply plugin: 'com.github.spotbugs'
+
+spotbugs {
+    toolVersion = '4.7.3'
+    ignoreFailures = true // TODO set to false after initial project setup
+
+    reportsDir = file("$buildDir/reports/spotbugs")
+}
+
+spotbugsMain {
+    reports {
+        html {
+            required = true
+        }
+    }
+}

@@ -1,0 +1,44 @@
+apply plugin: 'info.solidsoft.pitest'
+
+pitest {
+    //adds dependency to org.pitest:pitest-junit5-plugin and sets "testPlugin" to "junit5"
+    junit5PluginVersion = '1.1.1'
+    pitestVersion = '1.10.3'
+    jvmArgs = ['Xmx2048m']
+
+    targetClasses = ["$group.*"]
+    mainSourceSets = [sourceSets.main]
+    testSourceSets = [sourceSets.test]
+
+    reportDir = file(rootProject.projectDir.getAbsolutePath() + '/build/reports/pit')
+    outputFormats = ['XML', 'HTML']
+
+    coverageThreshold = 90
+    mutationThreshold = 90
+
+    failWhenNoMutations = false // TODO return to "true" once tests are in place
+
+    mutators = [
+            'CONDITIONALS_BOUNDARY',
+            'INCREMENTS',
+            'INVERT_NEGS',
+            'MATH',
+            'NEGATE_CONDITIONALS',
+            'VOID_METHOD_CALLS',
+            'CONSTRUCTOR_CALLS',
+            'EMPTY_RETURNS',
+            'FALSE_RETURNS',
+            'INLINE_CONSTS',
+            'NULL_RETURNS',
+            'NON_VOID_METHOD_CALLS',
+            'PRIMITIVE_RETURNS',
+            'REMOVE_CONDITIONALS',
+            'REMOVE_INCREMENTS',
+            'TRUE_RETURNS',
+    ]
+    threads = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    timeoutConstInMillis = 30_000
+    verbose = false
+    timestampedReports = false
+}
+test.finalizedBy(project.tasks.pitest)

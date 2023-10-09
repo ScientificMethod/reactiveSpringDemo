@@ -1,0 +1,9 @@
+idea {
+    module {
+        scopes.TEST.plus += [
+                configurations.integrationCompile,
+                configurations.integrationRuntime
+        ]
+        testSourceDirs += sourceSets.integration.allSource.srcDirs
+    }
+}
