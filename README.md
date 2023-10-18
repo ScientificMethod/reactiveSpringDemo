@@ -46,15 +46,38 @@ This table also utilizes two different mechanisms for ensuring data integrity.
 # Demo Requirements
 Create an API that exposes details about a trillionaire's car collection.
 
-Data sources to be exposed:
+Documents to be exposed:
 - Textual descriptions
 - Blog entries
-- Inventory; count & location(s)
+- Inventory (location(s))
 - Images
 - Video
 - Maintenance records
 
 ### API
+
+- /v1/toys?id={id}
+  - Exposes all documents in a single API call for a single vehicle
+  - Parameters are utilized to allow flexibility for future features on a low-level URI
+- /v1/toys/content/{id}/plate
+  - Exposes all text, blogs, images, and video for a single vehicle
+- /v1/toys/garage/{id}/plate
+  - Exposes the location and maintenance records for a single vehicle
+- /v1/toys/garage/{make_model}/model?year={year}
+  - Exposes the location and maintenance records for a single vehicle
+
+#### Versioning
+As long as clients are written to accept unknown fields & values in a fault-tolerant way 
+you can _**add**_ new fields, values, (optional) parameters, and uri's without issue.
+
+Versioning (`/v1/`, `/v2/`, ...) URIs is a critical control-plane allowing the safest 
+method for removing fields & features. Though its existence will appear unnecessary 
+until you have multiple versions running at the same time.  
+
+In support of this, it is critical that you maintain a contact mechanism for each client
+to communicate any version-driven-migration needs. It could be as simple as associating 
+a team's email with each approved client-authentication or requiring that each client's 
+team join an email list owned by your team.
 
 
 # Running the project

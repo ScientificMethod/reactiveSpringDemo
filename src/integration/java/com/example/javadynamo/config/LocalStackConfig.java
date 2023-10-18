@@ -32,7 +32,7 @@ public class LocalStackConfig {
     @Bean(initMethod = "start")
     public LocalStackContainer localStackContainer() {
         return new LocalStackContainer(DockerImageName.parse("localstack/localstack"))
-                .withServices(DYNAMODB, SQS);
+                .withServices(DYNAMODB);
     }
 
     @Bean
@@ -40,19 +40,6 @@ public class LocalStackConfig {
     public DynamoDbAsyncClient localStackDynamo(LocalStackContainer container) {
         return DynamoDbAsyncClient.builder()
                 .endpointOverride(container.getEndpointOverride(DYNAMODB))
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(
-                                container.getAccessKey(), container.getSecretKey()
-                        )))
-                .region(Region.of(container.getRegion()))
-                .build();
-    }
-
-    @Bean
-    @Primary
-    public SqsAsyncClient localStackSqs(LocalStackContainer container) {
-        return SqsAsyncClient.builder()
-                .endpointOverride(container.getEndpointOverride(SQS))
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create(
                                 container.getAccessKey(), container.getSecretKey()
